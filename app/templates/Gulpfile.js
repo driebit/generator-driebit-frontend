@@ -8,7 +8,7 @@ var sass            = require('gulp-sass'),
 
     <% if (stack == 'ginger') { %>
     minifyCss = require('gulp-minify-css'),
-    <% } else { ?>
+    <% } else { %>
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     <% } %>
@@ -96,7 +96,7 @@ gulp.task('prod-css', function () {
     return process(CSS_SRC + '/*.scss', CSS_PROD, allOps);
 });
 
-<% if (stack != 'ginger') { ?>
+<% if (stack != 'ginger') { %>
 gulp.task('prod-js-html5shiv', function () {
     return process(
         [
@@ -111,8 +111,8 @@ gulp.task('prod-js-html5shiv', function () {
 });
 <% } %>
 
-<% if (stack != 'ginger') { ?>
-<% if (libraries.jquery || libraries.angular) { ?>
+<% if (stack != 'ginger') { %>
+<% if (libraries.jquery || libraries.angular) { %>
 gulp.task('prod-js-vendors', function () {
     var input = [];
 

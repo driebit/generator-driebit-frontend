@@ -29,12 +29,12 @@
         "node": false,
         "browser": true
 
-        <% if (jQuery) %>
+        <% if (jQuery) {%>
             ,
             "jquery': true
-        <% } ?>
+        <% } %>
 
-    <% else %>
+    <% } else { %>
         "es3": false,
         "node": true
     <% } %>

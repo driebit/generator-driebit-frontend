@@ -1,5 +1,6 @@
 var generators = require('yeoman-generator'),
-    fs         = require('fs');
+    fs         = require('fs'),
+    _          = require('lodash');
 
 module.exports = generators.Base.extend({
     constructor: function () {
@@ -20,11 +21,16 @@ module.exports = generators.Base.extend({
             }
         };
 
+        this.log("\n");
+        this.log("\n");
         this.log("     _      _      _     _ _");
         this.log("  __| |_ __(_) ___| |__ (_) |_");
         this.log(" / _` | '__| |/ _ \\ '_ \\| | __|");
         this.log("| (_| | |  | |  __/ |_) | | |_");
         this.log(" \\__,_|_|  |_|\\___|_.__/|_|\\__|");
+        this.log("\n");
+        this.log("\n");
+
 
         // Probably Symfony2
         if (fs.existsSync('src/AppBundle')) {
@@ -169,7 +175,7 @@ module.exports = generators.Base.extend({
                 this.destinationPath(this.answers.webRoot + '/.jshintrc'),
                 {
                     type: 'browser',
-                    jquery: this.answers.libraries.indexOf('jquery') > -1
+                    jQuery: this.answers.libraries.indexOf('jquery') > -1
                 }
             );
         },
@@ -187,7 +193,7 @@ module.exports = generators.Base.extend({
     //
     writing: {
         layoutTemplate: function () {
-            var stack = this.answers.stack;
+            var stack = this.answers.stack,
                 fileName;
 
             if (stack == 'ginger') {
@@ -214,18 +220,28 @@ module.exports = generators.Base.extend({
         },
 
         gulpFile: function () {
+            var stack = this.answers.stack,
+                answers = this.answers;
+
+            console.log(this.templatePath('Gulpfile.js'));
+            console.log(this.destinationPath());
+
             this.fs.copyTpl(
                 this.templatePath('Gulpfile.js'),
                 this.destinationPath(),
                 {
                     stack: stack,
+                    paths: {
+                        webRoot: answers.webRoot,
+                        views: answers.templateRoot
+                    },
                     features: {
-                        livereload: this.answers.features.indexOf('livereload') > -1
+                        livereload: answers.features.indexOf('livereload') > -1
                     },
                     libraries: {
-                        jquery: this.answers.libraries.indexOf('jquery') > -1,
-                        angular: this.answers.libraries.indexOf('angular') > -1,
-                        html5shiv: this.answers.libraries.indexOf('html5shiv') > -1
+                        jquery: answers.libraries.indexOf('jquery') > -1,
+                        angular: answers.libraries.indexOf('angular') > -1,
+                        html5shiv: answers.libraries.indexOf('html5shiv') > -1
                     }
                 }
             );
@@ -241,7 +257,7 @@ module.exports = generators.Base.extend({
             fs.mkdirSync(css + '/dev');
             fs.mkdirSync(css + '/prod');
 
-            this._.forEach([
+            _.forEach([
                 'css/src/_mixins.scss',
                 'css/src/_variables.scss',
                 'css/src/screen.scss'
@@ -250,7 +266,7 @@ module.exports = generators.Base.extend({
                     this.templatePath(path),
                     this.destinationPath(this.answers.webRoot + '/' + path)
                 );
-            });
+            }, this);
         },
 
         jsStructure: function () {
@@ -283,9 +299,9 @@ module.exports = generators.Base.extend({
                 }
             }
 
-            this._.forEach(libs, function (lib) {
+            _.forEach(libs, function (lib) {
                 this.bowerInstall([lib], { 'save': true }, installComplete);
-            });
+            }, this);
         },
 
         npm: function () {
@@ -325,9 +341,9 @@ module.exports = generators.Base.extend({
                 installLibs = installLibs.concat(libsLiveReload);
             }
 
-            this._.forEach(installLibs, function (lib) {
+            _.forEach(installLibs, function (lib) {
                 this.npmInstall([lib], { 'save': true }, installComplete)
-            });
+            }, this);
         }
     }
 });
