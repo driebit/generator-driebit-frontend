@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!--
+ #################################
+       _      _      _     _ _
+    __| |_ __(_) ___| |__ (_) |_
+   / _` | '__| |/ _ \ '_ \| | __|
+  | (_| | |  | |  __/ |_) | | |_
+   \__,_|_|  |_|\___|_.__/|_|\__|
+
+ ############ driebit ############
+
+ geavanceerde internet applicaties
+
+         Oudezijds Voorburgwal 247
+                 1012 EZ Amsterdam
+                    020 - 420 8449
+                   info@driebit.nl
+                    www.driebit.nl
+
+##################################
+//-->
+
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]> <html dir="ltr" <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}" <% } %> class="no-js iem7"> <![endif]-->
+<!--[if lt IE 7 ]>    <html dir="ltr" <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}" <% } %> class="no-js ie ie6 oldie"> <![endif]-->
+<!--[if IE 7 ]>       <html dir="ltr" <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}" <% } %> class="no-js ie ie7 oldie"> <![endif]-->
+<!--[if IE 8 ]>       <html dir="ltr" <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}" <% } %> class="no-js ie ie8 oldie"> <![endif]-->
+<!--[if IE 9 ]>       <html dir="ltr" <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}" <% } %> class="no-js ie ie9 oldie"> <![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)|!(IEMobile)|(IE)]><!-->
+    <html <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}"<% } %> class="ie">
+<!-- [else]  -->
+    <html <% if (stack == 'ginger') { ?>lang="{{ z_language|default:"en"|escape }}"<% } %>>
+<!--<![endif]-->
+    <head>
+        <script>document.getElementsByTagName('html')[0].className.replace('no-js', 'has-js');</script>
+        <% if (libraries.html5shiv) { ?>
+        <!--[if lt IE 9]>
+            <% if (stack == 'ginger') { %>
+                {% lib
+                    "/bower_components/html5shiv/dist/html5shiv.js"
+                    "/bower_components/html5shiv/dist/html5shiv-printshiv.js"
+                %}
+            <% } else { %>
+                {# build will be placed at /js/prod/html5shiv.js #}
+                <script src="/bower_components/html5shiv/dist/html5shiv.js"></script>
+                <script src="/bower_components/html5shiv/dist/html5shiv-printshiv.js"></script>
+            <% } %>
+        <![endif]-->
+        <% } %>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Driebit" />
+
+        <% if (stack == 'ginger') { ?>
+            <meta property="og:locale" content="en_US" />
+            <meta property="og:title" content="{% if id.short_title %}{{ id.short_title }}{% else %}{{ id.title }}{% endif %}" />
+            <meta property="og:description" content="{% if id.summary %}{{ id.summary|striptags|truncate:140 }}{% elseif id.body %}{{ id.body|striptags|truncate:140 }}{% endif %}" />
+            <meta property="og:url" content="http://{{ m.site.hostname }}{{ id.page_url }}"/>
+        <% } else { %>
+            <meta property="og:locale" content="en_US" />
+            <meta property="og:title" content="{% block og_title %}{% endblock %}" />
+            <meta property="og:description" content="{% block og_description %}{% endblock %}" />
+            <meta property="og:url" content="{% block og_url %}{% endblock %}"/>
+        <% } %>
+
+        <% if (stack == 'ginger') { ?>
+            {% if id.depiction %}
+                <meta property="og:image" content="http://{{ m.site.hostname }}{% image_url id.depiction mediaclass="facebook-og" %}"/>
+            {% else %}
+                <meta property="og:image" content="http://{{ m.site.hostname }}/lib/images/default.jpg" />
+            {% endif %}
+        <% } else { %>
+            <meta property="og:image" content="{% block og_image %}{% endblock %}" />
+        <% } %>
+
+        <meta property="og:site_name" content="" />
+
+        <% if (stack == 'ginger') { ?>
+            <meta property="og:type" content="article" />
+            <meta property="article:publisher" content="http://{{ m.site.hostname }}" />
+            <meta property="article:section" content="Article" />
+            <meta property="article:published_time" content="{{ id.rsc.created }}" />
+            <meta property="article:modified_time" content="{{ id.rsc.modified }}" />
+        <% } else { %>
+            <meta property="og:type" content="article" />
+            <meta property="article:publisher" content="{% block article_publisher %}{% endblock %}" />
+            <meta property="article:section" content="Article" />
+            <meta property="article:published_time" content="{% block article_published %}{% endblock %}" />
+            <meta property="article:modified_time" content="{% block article_modified %}{% endblock %}" />
+        <% } %>
+
+        <% if (stack == 'ginger') { ?>
+            <meta name="twitter:card" content="summary"/>
+            <meta name="twitter:description" content="{% if id.summary %}{{ id.summary|striptags|truncate:140 }}{% elseif id.body %}{{ id.body|striptags|truncate:140 }}{% endif %}"/>
+            <meta name="twitter:title" content="{% if id.short_title %}{{ id.short_title }}{% else %}{{ id.title }}{% endif %} | {{ m.config.site.title.value }}"/>
+            <meta name="twitter:site" content="{% block twitter_site %}{% endblock %}"/>
+        <% } else { %>
+            <meta name="twitter:card" content="summary"/>
+            <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}"/>
+            <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}"/>
+            <meta name="twitter:site" content="{% block twitter_site %}{% endblock %}"/>
+        <% } %>
+
+        <% if (stack == 'ginger') { %>
+            <title>{% block title %}{{ id.title }}{% endblock %} &mdash; {{ m.config.site.title.value }}</title>
+        <% } else { %>
+            <title>{% block title %}{% endblock %}</title>
+        <% } %>
+
+        <% if (stack == 'ginger') { %>
+            <link rel="icon" href="/lib/images/favicon.ico" type="image/x-icon" />
+            <link rel="shortcut icon" href="/lib/images/favicon.ico" type="image/x-icon" />
+        <% } else { %>
+            <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <% } %>
+
+        <% if (stack == 'ginger') { %>
+            {% lib
+                "bootstrap/css/bootstrap.min.css"
+                "css/mod_ginger_site/screen.css"
+            %}
+
+            {% all include "_head.tpl" %}
+
+            {% block head_extra %}
+                {% lib
+                    "css/prod/screen.css"
+                %}
+            {% endblock %}
+        <% } else { %>
+            {% block head_extra %}{% endblock %}
+
+            {% block stylesheets}
+                <link rel="stylesheet" href="/css/dev/screen.css" media="screen"/>
+            {% endblock %}
+        <% } %>
+    </head>
+
+    <body class="{% block page_class %}{% endblock %}">
+        <% if (stack == 'ginger') { %>
+            {% block header %}
+                {% include "_header.tpl" context=context %}
+            {% endblock %}
+
+            {% block breadcrumb %}{% endblock %}
+        <% } %>
+
+        {% block content %}{% endblock %}
+
+        <% if (stack == 'ginger') { %>
+            {% block footer %}
+                {% include "_footer.tpl" %}
+            {% endblock %}
+
+            {% include "_js_include.tpl" %}
+            {% all include "_script.tpl" %}
+            {% block module_script %}{% endblock %}
+        <% } %>
+
+        {% block javascripts %}
+            <% if (stack != 'ginger') { %>
+                {# concatted version of vendors will be at /js/prod/bootstrap.js #}
+                <% if (libraries.jquery) { %>
+                    <script src="/bower_components/jquery/dist/jquery.js"></script>
+                <% } %>
+
+                <% if (libraries.angular) { %>
+                    <script src="/bower_components/angular/angular.js"></script>
+                <% } %>
+            <% } else { %>
+                {% lib
+                    "/bower_components/jquery/dist/jquery.js",
+                    "/bower_components/angular/angular.js"
+                %}
+
+                <% if (features.livereload) { %>
+                    <!--[if (gt IE 9)|!(IE)]><!-->
+                        <script src="//192.168.33.10:35729/livereload.js"></script>
+                    <!--<![endif]-->
+                <% } %>
+            <% } %>
+        {% endblock %}
+    </body>
+</html>

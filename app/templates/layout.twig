@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+ #################################
+       _      _      _     _ _
+    __| |_ __(_) ___| |__ (_) |_
+   / _` | '__| |/ _ \ '_ \| | __|
+  | (_| | |  | |  __/ |_) | | |_
+   \__,_|_|  |_|\___|_.__/|_|\__|
+
+ ############ driebit ############
+
+ geavanceerde internet applicaties
+
+         Oudezijds Voorburgwal 247
+                 1012 EZ Amsterdam
+                    020 - 420 8449
+                   info@driebit.nl
+                    www.driebit.nl
+
+##################################
+//-->
+<!--[if IE 8 ]> <html lang="nl" class="ie8"> <![endif]-->
+<!--[if IE 9 ]> <html lang="nl" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="nl">
+
+<!--<![endif]-->
+    <head>
+        <script>document.getElementsByTagName('html')[0].className += ' hasJS';</script>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>{{ block('title') }}</title>
+
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+        {% block html_head %}{% endblock %}
+
+        {% block stylesheets %}
+            <% if templateLanguage == 'twig' { %>
+            {# make your own provisions for production builds (/css/prod/screen.css) #}
+            <link rel="stylesheet" href="/css/dev/screen.css"/>
+            <% } else { %>
+            {% lib '/css/dev/screen.css' %}
+            <% } %>
+        {% endblock %}
+
+        <% if (html5shiv) { %>
+        <!--[if lt IE 9]>
+            <% if templateLanguage == 'twig' { %>
+            {# make your own provisions for production builds #}
+            <script src="/bower_components/html5shiv/dist/html5shiv.js"></script>
+            <script src="/bower_components/html5shiv/dist/html5shiv-printshiv.js"></script>
+            <% } else { %>
+            {% lib
+                "/bower_components/html5shiv/dist/html5shiv.js"
+                "/bower_components/html5shiv/dist/html5shiv-printshiv.js"
+            %}
+            <% endif %>
+        <![endif]-->
+        <% } %>
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-xxxxxxxxx', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body class="{% block page_class %}{% endblock %}">
+        {% block content %}{% endblock %}
+
+        {% block javascripts %}
+            <% if (templateLanguage == 'twig') { %>
+            {# make your own provisions for production builds #}
+            <% if (jquery) { %>
+            <script src="/bower_components/jquery/dist/jquery.js"></script>
+            <% } %>
+
+            <% if (angular) { %>
+            <script src="/bower_components/angular/angular.js"></script>
+            <script src="/js/src/angular/bootstrap.js"></script>
+            <% } %>
+
+            <% } else { %>
+                {% lib
+                    <% if (jquery) { %>
+                    "/bower_components/jquery/dist/jquery.js"
+                    <% } %>
+
+                    <% if (angular) { %>
+                    "/bower_components/angular/angular.js"
+                    "/js/src/angular/bootstrap.js"
+                    <% } %>
+                %}
+
+            <% } %>
+
+            <% if (liveReload) %>
+            <script src="//192.168.33.10:35729/livereload.js"></script>
+            <%  } %>
+        {% endblock %}
+    </body>
+</html>
